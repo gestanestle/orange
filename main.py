@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import tensorflow as tf
 import cv2
 import numpy as np
-from json import dumps
 from uvicorn import run
 import os
 
@@ -40,4 +39,6 @@ async def get_image_prediction(file: UploadFile):
     resize = tf.image.resize(img, (256, 256)) 
     prediction = model.predict(tf.expand_dims(resize / 255, 0))
     result = prediction[0].tolist()[0]
-    return result > 0.5 # Is fruit rotten?
+
+    res = result > 0.5 # Is fruit rotten?
+    return { "data": res }
