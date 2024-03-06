@@ -1,4 +1,6 @@
-from fastapi import FastAPI, UploadFile
+from typing import Annotated
+
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import tensorflow as tf
 import cv2
@@ -8,7 +10,7 @@ import os
 
 app = FastAPI()
 
-model = tf.keras.models.load_model("orange_2-15-0.h5")  
+model = tf.keras.models.load_model("orange.h5")  
 
 origins = ["*"]
 methods = ["*"]
@@ -41,4 +43,9 @@ async def get_image_prediction(file: UploadFile):
     result = prediction[0].tolist()[0]
 
     res = result > 0.5 # Is fruit rotten?
-    return { "data": res }
+    print(result)
+    return res;
+
+
+
+
